@@ -5,11 +5,11 @@ import Home from './pages/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import { useEffect, useState } from 'react';
-// import Footer from './components/Footer';
+import Footer from './components/Footer';
 // import About from './pages/About'
 // import Contact from './pages/Contact'
 // import Details from './pages/Details';
-// import Reservation from './pages/Reservation'
+import Reservation from './pages/Reservation'
 
 function App() {
   const [blogs, setBlogs] = useState(null)
@@ -17,8 +17,7 @@ function App() {
 
   const fetchblogs = async() => {
     try{
-      const response = await fetch('http://localhost:3000/Blogs')
-      
+      const response = await fetch('http://localhost:8000/Blogs')
       if(!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`)
       }
@@ -32,7 +31,6 @@ function App() {
 
   useEffect(() => {
     fetchblogs()
-    console.log(blogs)
   }, [])
   return (
     <>
@@ -40,9 +38,10 @@ function App() {
         <NavBar />
         {isPending && <div>Loading...</div>}
         <Routes>
-          {blogs && <Route path='/viva-Express' element={<Home blogs={blogs} />} exact />}
+          <Route path='/viva-Express' element={<Home blogs={blogs} />} exact />
+          <Route path='/reservation' element={<Reservation />} />
         </Routes> 
-        {/* <Footer/> */}
+        <Footer/>
       </Router>
     </>
   );
