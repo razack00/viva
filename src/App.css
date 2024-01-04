@@ -1,0 +1,193 @@
+:root {
+  --black: #000;
+  --blue:#1C69D4;
+  --hover-blue:#0653B6;
+  --border-color: rgba(212, 212, 212, 0.7);
+  --dark-gray: #262626;
+  --grey: #6b6b6b;
+  --light-grey: rgb(214, 211, 211);
+  --lightest-grey: rgba(223, 219, 219, 0.7);
+  --white: #fff;
+  --lightblue: #00c6ff;
+  --blue: #0072ff;
+  
+  --border-hover-color:var(--blue);
+  --text-color: var(--dark-gray);
+  --hero-text-color: #fff;
+  --gradient: linear-gradient(to right, #00c6ff 0%, #0072ff  51%, #00c6ff  100%);
+  --hover-gradient: linear-gradient(to right, #00c6ff 25%, #0072ff  100%);
+  
+  --primary-font: Arial, Helvetica, sans-serif;
+  
+  /* pc font sizes */
+  --title-fs:5.8rem;
+  --fw-light :300;
+  --subtitle-fs: 2.4rem;
+  --text-sm: 1.4rem;
+  --text-fs: 1.6rem;
+  --footer-nav-title: 2rem;
+  
+  --icon-fs: 1.8rem;
+  --icon-fw: 400;
+  --btn-fw: 700;
+  --text-fw: 100;
+
+  --subtitle-fw: 400;
+  
+  /* mobile font sizes */
+  --title-mb-fs: 2.3rem;
+  --title-mb-fw: 700;
+  --subtitle-mb-fs: 1.5rem;
+  --text-mb-fs: 1.125rem;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+*, ::after, ::before {
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+body {
+  margin: 0px;
+  position: relative;
+  font-size: var(--text-fs) !important;
+  font-weight: var(--text-fw);
+  color: var(--text-color);
+}
+
+
+/* General Styles */
+.page-container {
+  margin-top: 7rem;
+}
+
+.container {
+  max-width: 100% !important;
+  width: 92.5% !important;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+.btn-colored {
+  border: none !important;
+  background: var(--gradient);
+  padding: 1rem .5rem !important;
+  transition: 3s;
+}
+
+.btn-colored:hover {
+  background: var(--hover-gradient);  
+}
+/* End General Styles */
+
+/* nav section styles */
+.nav-link {
+  font-size: var(--text-sm) !important;
+  color: var(--hero-text-color) !important;
+  font-weight: 600 !important;
+  padding-inline: 1rem !important;
+}
+
+.dropdown-item {
+  color: var(--dark-gray) !important;
+  padding: .2rem 1.3rem !important;
+  font-weight: 400 !important;
+  font-size: var(--text-sm) !important;
+}
+
+.nav-item:hover, .nav-link:hover {
+  background: var(--blue);
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+  border-radius: 0;
+  border: none;
+  margin: 0 !important;
+  padding-right: .8rem
+}
+
+.navbar-toggler {
+  border-color: white !important;
+  background-color: white !important
+}
+
+/* End Nav section styles */
+
+
+/* Hero section styles */
+.title {
+  font-size: var(--title-fs);
+  font-weight: var(--text-fw);
+  line-height: 6.4rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.hero-title {
+  font-weight: 800 !important;
+}
+
+.subtitle {
+  font-size: var(--subtitle-fs);
+  font-weight: var(--subtitle-fw);
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+header {
+  background-image: linear-gradient(315deg, #15181a64 0%, #02162a5a 74%), url(../public/images/busbg.jpg) ;
+  background-size:cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  height: 86vh;
+  position: static;
+  margin-top: -5rem;
+  z-index: -1;
+  color: var(--hero-text-color) !important;
+}
+/* End hero section styles */
+
+/* Booking section styles */
+i, select, option, .form-control{
+  font-size: var(--text-sm) !important;
+}
+
+input[type="radio"], .form-select, .form-control{
+  border-color: #989898 !important;
+}
+/* End Bookind section styles */
+
+
+
+
+
+.btn-grad {
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  
+  background-size: 200% auto;
+  color: var(--white);            
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.footer ul a {
+  font-weight: 300;
+  color: var(--white)
+}
+
+
+   
