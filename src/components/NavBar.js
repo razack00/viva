@@ -7,19 +7,23 @@ import { LinkContainer } from 'react-router-bootstrap';
 function NavBar() {
   return (
     <>
-      <div className='p-3'style={{background: "#fff"}}></div>
-      <Navbar className='p-3' expand="lg" style={{background: "#0E9CD8", borderBottom: " 5px solid #fff"}}>
+      <Navbar 
+      className='p-3 w-100' 
+      expand="md" 
+      style={{background: "#0E9CD8", zIndex: "888", position: "fixed", top: '0', borderBottom: " 5px solid #fff"}}>
         <Container fluid className='d-flex container'>
-          <Navbar.Brand href="#home">
+        <LinkContainer to="viva-Express">
+        <Navbar.Brand href="#home">
             <Row>
               <Col style={{height:"fit-content"}}>
                 <img src= {process.env.PUBLIC_URL + '/images/bglogo.jpg'} alt='logo' width="40px" className='mt-0'></img>
               </Col>
               <Col className='m-auto'>
-                <span className="hero-moto flex fs-3 text-white"><p>The <b>Ultimate</b> Driving Machine</p></span>
+                <span className="hero-moto flex fs-3 text-white"><p>The <b>Ultimate</b> VE </p></span>
               </Col>
             </Row>
           </Navbar.Brand>
+        </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav border-white bg-white" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto w-100 justify-content-end">
@@ -27,7 +31,7 @@ function NavBar() {
                 <Nav.Link className='nav-item'>HOME</Nav.Link>
               </LinkContainer>
               <LinkContainer to="/about">
-                <Nav.Link>ABOUT COMPANY</Nav.Link>
+                <Nav.Link>ABOUT US</Nav.Link>
               </LinkContainer>
               <NavDropdown title="SERVICES" id="basic-nav-dropdown" renderMenuOnMount={true}>
               <LinkContainer to="/about">
@@ -38,16 +42,14 @@ function NavBar() {
               </LinkContainer>
               </NavDropdown>
               <NavDropdown title="PLAN YOUR JOURNEY" id="basic-nav-dropdown" renderMenuOnMount={true}>
-                <NavDropdown.Item href="#action/3.1">SCHEDULES & RATES</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  ROUTES
-                </NavDropdown.Item>
+                <LinkContainer to="/">
+                  <NavDropdown.Item>
+                    ROUTES AND PRICES
+                  </NavDropdown.Item>
+                </LinkContainer>
                 <LinkContainer to="reservation">
                   <NavDropdown.Item>BOOK A RESERVATION</NavDropdown.Item>
                 </LinkContainer>
-                <NavDropdown.Item href="#action/3.4">
-                  TICKET INFORMATION
-                </NavDropdown.Item>
               </NavDropdown>
               <LinkContainer to="/blog">
                 <Nav.Link>BLOG</Nav.Link>
