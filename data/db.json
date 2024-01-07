@@ -4,30 +4,30 @@
             "id": "P0001",
             "origin": "Yaounde",
             "destination": "Douala",
-            "type": "First class",
-            "departure_date": "2024-01-06",  
+            "departure_date": "2024-01-08",  
             "departure_time": "22:30",  
             "travel_duration": 3,
+            "category": "First Class", 
             "price": "5000FCFA"
         },
         {
             "id": "P0002",
             "origin": "Douala",
             "destination": "Yaounde",
-            "type": "business class",
             "departure_date": "2024-01-06",  
             "departure_time": "03:30",  
             "travel_duration": 4,
+            "category": "Economic", 
             "price": "5000FCFA"
         },
         {
             "id": "P0003",
             "origin": "Douala",
             "destination": "Yaounde",
-            "type": "economic class",
-            "departure_date": "2024-01-06",  
-            "departure_time": "07:30",  
+            "departure_date": "2024-01-07",  
+            "departure_time": "16:30",  
             "travel_duration": 4,
+            "category": "Classic", 
             "price": "5000FCFA"
         }
     ],
