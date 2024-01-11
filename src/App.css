@@ -14,13 +14,14 @@
   --border-hover-color:var(--blue);
   --text-color: var(--dark-gray);
   --hero-text-color: #fff;
-  --gradient: linear-gradient(to right, #00c6ff 0%, #0072ff  51%, #00c6ff  100%);
+  --gredient: linear-gradient(to right, #96b6dd 0%, #0072ff  51%, #00c6ff  100%);
   --hover-gradient: linear-gradient(to right, #00c6ff 25%, #0072ff  100%);
   
   --primary-font: Arial, Helvetica, sans-serif;
   
   /* pc font sizes */
-  --title-fs:5.8rem;
+  --title-fs:4.8rem;
+  --title-fw: 700;
   --fw-light :300;
   --subtitle-fs: 2.4rem;
   --text-sm: 1.4rem;
@@ -80,13 +81,13 @@ a:link {
 
 .btn-colored {
   border: none !important;
-  background: var(--gradient);
+  background: var(--gredient);
   padding: 1rem .5rem !important;
   transition: 3s;
 }
 
 .btn-colored:hover {
-  background: var(--hover-gradient);  
+  background: var(--hover-gredient);  
 }
 /* End General Styles */
 
@@ -128,13 +129,24 @@ a:link {
 /* Hero section styles */
 .title {
   font-size: var(--title-fs);
-  font-weight: var(--text-fw);
-  line-height: 6.4rem;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: var(--title-fw);
+  line-height: 1.1;
+  font-family: "Poppins",sans-serif;
 }
 
-.hero-title {
-  font-weight: 800 !important;
+.fancy{
+  background-image: var(--gredient);
+  background-size: 100% 18%;
+  background-repeat: repeat-x;
+  background-position: left 0% bottom 10%;
+
+}
+
+.hero-subtitle {
+  color: #c8c7ce;
+  font-family: Rubik,sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.6;
 }
 
 .subtitle {
@@ -163,13 +175,9 @@ i, select, option, .form-control{
 }
 
 input[type="radio"], .form-select, .form-control{
-  border-color: #989898 !important;
+  color: #636262;
 }
 /* End Bookind section styles */
-
-
-
-
 
 .btn-grad {
   margin: 10px;
