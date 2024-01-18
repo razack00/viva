@@ -175,7 +175,26 @@ i, select, option, .form-control{
 }
 
 input[type="radio"], .form-select, .form-control{
-  color: #636262;
+  color: #8d8d8d;
+}
+
+.reservationInputs .form-select, .reservationInputs .form-control {
+  background-color: #032c53;
+  color: #ededed;
+  border-color: #999;
+}
+
+.reservationInputs input::placeholder {
+  color: #7e7e7e;
+  opacity: 1;
+}
+
+.reservationInputs .form-label {
+  color: #c3c3c3;
+}
+
+.reservationInputs .form-select option[disabled] {
+  color: #7e7e7e !important
 }
 /* End Bookind section styles */
 
