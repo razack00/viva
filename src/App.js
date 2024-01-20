@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import { useEffect, useState } from 'react';
 import Footer from './components/Footer';
-// import About from './pages/About'
-// import Contact from './pages/Contact'
+import About from './pages/About'
+import Contact from './pages/Contact'
 // import Details from './pages/Details';
 import Reservation from './pages/Reservation'
 
@@ -40,6 +40,9 @@ function App() {
         <Routes>
           <Route path='/viva-Express' element={<Home blogs={blogs} />} exact />
           <Route path='/reservation' element={<Reservation />} />
+          <Route path='/about' element={<About />} />
+
+          <Route path='/contact' element={<Contact />} />
         </Routes> 
         <Footer/>
       </Router>
