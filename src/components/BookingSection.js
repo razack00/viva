@@ -1,184 +1,243 @@
 import { Col, Container, Row, Button, Form, Modal} from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-// import { getDefaultNormalizer } from '@testing-library/react';
+
+// Todos: add field to database, filter should check that there are enough seats available depending of number passengers passed in.
 
 function BookingSection() {
     const [show, setShow] = useState(false);
+    const [validated, setValidated] = useState(false)
     const [availableRoutes, setavailableRoutes] = useState([]);
     const [message, setmessage] = useState([])
-    const [formData, setFormData] = useState({
+    const [schedules, setSchedules] = useState([])
+    const [searchData, setSeachData] = useState({
         origin: "",
         destination: "",
         category: "All",
         departure_date: "",
-        NumPassengers: "",
+        NumPassengers: 1,
         tripType: "",
-        returnDate: ""
+        return_date: "",
+        return_time: ""
     })
-
     const today = new Date()
     const formattedToday = today.toISOString().slice(0, 10)
-
     const navigate = useNavigate()
 
-    //Fetching available routes
+    // handles input value change
+    const handleInputDataChange = (e) => {
+        if (e.target.value === "One Way") {
+            setSeachData({...searchData, [e.target.name]: e.target.value, return_date: ""})
+        }else {
+            setSeachData({...searchData, [e.target.name]: e.target.value})
+        }
+    }
+
+    //Fetches available routes
     const fetchRoutes = async() => {
         try{
-          const response = await fetch('http://localhost:8000/Routes')
+          const response = await fetch('http://localhost:8000/routes')
 
-          //Throwing a custom error if the status code is not ok(200)   
+          //Throws a custom error if the status code is not ok   
           if(!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`)
           }
           const data = await response.json()
 
-          //filtering available routes 
-          setavailableRoutes(data.filter(route => {
-            if(formData.category == "All") {
-                return route.origin === formData.origin && route.destination === formData.destination
-            }
-                return route.origin === formData.origin && route.destination === formData.destination && formData.category === route.category
-            }))
-          console.log(availableRoutes)
+          //sets available routes to filtered routes 
+          setavailableRoutes(filterAvailableRoutes(data))
         } catch (err) {
-          console.log(err)
+          alert("We're having trouble fetching available routes. Please check your internet connection and try again.")
         }
     }
-    
-    // rerangering when from input state changes
+
+    // seperate function to filter routes
+    const filterAvailableRoutes = (routes) => {
+        return (routes.filter(route => {
+            const routeDateTime = new Date (route.departure_date + "T" + route.departure_time)
+            // returning filtered routes
+            return (searchData.category === "All" || route.category === searchData.category) && route.origin === searchData.origin && route.destination === searchData.destination && route.departure_date === searchData.departure_date && today < routeDateTime
+        }))
+    }
+
+    // determines which schedules to show in return date input depending on the departure and return dates
+    const determineScheduleList = () => {
+        const departureDate = new Date(searchData.departure_date).toDateString()
+        const returnDate = new Date(searchData.return_date).toDateString()
+        const listOfSchedules = [{time: "04:30"}, {time: "07:30"}, {time: "10:30"}, {time: "13:30"}, {time:  "16:30"}, {time: "19:30"}, {time: "23:58"}]
+        if(departureDate === today.toDateString() && returnDate === departureDate) {
+            setSchedules(listOfSchedules.map(schedule => {
+                return new Date(searchData.return_date + "T" + schedule.time) > new Date(today.getTime() + (1 * 60 * 60 * 1000))? {...schedule, color: "", disabled: false} : {...schedule, color: "red", disabled: true}
+            }))
+        }else {
+            setSchedules(listOfSchedules.map(schedule => {
+                return {...schedule, color: "", disabled: false}}))
+        }
+    }
+
+    // rerenders when form input state changes
     useEffect(() => {
         fetchRoutes()
-        console.log('render')
-        console.log('info:', formData)
+        determineScheduleList()
+        console.log('info:', searchData)
+        console.log("return_time", searchData.return_date !== "")
+    }, [searchData])
 
-    }, [formData])      
- 
 
-    // handling Modal display
+    console.log('list:', schedules)
+    // handles Modal display
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
- 
-    // validating form submittion
+    
+
+    // validates form submittion
     const handleSubmit = (event) => {
         event.preventDefault()
-        const isEmpty = Object.values(formData).some(value => value === "")
-        console.log("is empty", isEmpty)
+
+        // checks if any input is empty depending on trip type
+        const isEmpty = Object.entries(searchData)
+        .some(([key, value]) => ((key !== "return_date" && key !== "return_time") || searchData.tripType !== "One Way") && value === "")
+        console.log(isEmpty)
+        setValidated(true)
+
+        const DepartureDate = new Date(searchData.departure_date)
+        const ReturnDate = new Date(searchData.return_date)
+
         if(isEmpty){
-            setmessage("Please fill in all fields")
-        }else if(formData.origin === formData.destination) {
+            setmessage("Please make sure all fields are filled ")
+        }else if(searchData.origin === searchData.destination) {
             setmessage("Invalid Route. Choose a valid route")
+        }else if(searchData.tripType === "Round Trip" && DepartureDate > ReturnDate) {
+            setmessage("Invalid date. Return date most be a future date")
         }else if(availableRoutes.length > 0) {
+            // displays modal and reset message
             handleShow()
             setmessage([])
         }else{
-            setmessage("No bus for choosen Route") 
+            setmessage("Sorry, No Bus available for this route.") 
         }
     }
 
     return (
     <Container className='bg-white rounded-4 px-5 py-4 shadow' style={{marginTop: "-85px"}}>
-        <Form className='d-flex flex-column justify-content-center gap-5 py-4' onSubmit={handleSubmit}>
-            <div className='text-danger'>{message}</div>
+        <div className='text-danger'>{message}</div>
+        <Form noValidate validated = {validated} className='d-flex flex-column justify-content-center gap-5 py-4' onSubmit={handleSubmit}>
             <Row className='d-flex'>
-                <Col>
-                    <Form.Label htmlFor="from">Origin:</Form.Label>
+                <Form.Group as={Col} controlId="origin">
+                    <Form.Label>Origin:</Form.Label>
                     <Form.Select 
-                        onChange={e => setFormData({...formData, origin: e.target.value})}
-                        value={formData.origin}
-                        id='from'>
-                            <option>Enter origin</option>
+                        name='origin'
+                        required
+                        onChange={handleInputDataChange}
+                        type='text'>
+                            <option value={""} hidden>Enter origin</option>
                             <option value="Yaounde">Yaounde</option>
                             <option value="Douala">Douala</option>
                     </Form.Select>
-                </Col>
-                <Col>
-                    <Form.Label htmlFor="to">Destination:</Form.Label>
-                    <Form.Select 
-                        onChange={e => setFormData({...formData, destination: e.target.value})}
-                        value={formData.destination}
+                </Form.Group>
+                <Form.Group as={Col} controlId="destination">
+                    <Form.Label>Destination:</Form.Label>
+                    <Form.Select
+                        name='destination' 
+                        onChange={handleInputDataChange}
+                        required
+                        type="text"
                         >
-                            <option>Enter destination</option>
+                            <option value={""} hidden >Enter destination</option>
                             <option value="Yaounde">Yaounde</option>
                             <option value="Douala">Douala</option>
                     </Form.Select>
-                </Col>
-                <Col>
-                    <Form.Label htmlFor="type">Category:</Form.Label>
-                    <Form.Select name='type' onChange={e => setFormData({ ...formData, category: e.target.value })}>
-                        <option>All</option>
+                </Form.Group>
+                <Form.Group as={Col} controlId="category">
+                    <Form.Label>Category:</Form.Label>
+                    <Form.Select 
+                    name='category'
+                    required
+                    type="text" 
+                    onChange={handleInputDataChange}>
+                        <option value="" hidden>select category</option>
+                        <option value="All">All</option>
                         <option value="Economic">Economic</option>
                         <option value="First Class">First Class</option>
                         <option value="Classic">Classic</option>
                     </Form.Select>
-                </Col>
-                <Col>
-                    <Form.Label htmlFor="departure-date">Departure Date:</Form.Label>
+                </Form.Group>
+                <Form.Group as={Col} controlId="departureDate">
+                    <Form.Label>Departure Date:</Form.Label>
                     <Form.Control 
-                    className='fs-5' 
+                    className='fs-5 text-lightgrey' 
                     style={{paddingBlock: "4.92px",}} 
                     type="date"
-                    onChange={e => setFormData({...formData, departure_date: e.target.value})}
+                    required
+                    onChange={handleInputDataChange}
                     min = {formattedToday} 
-                    name='departure-date'/>
-                </Col>
+                    name='departure_date'/>
+                </Form.Group>
             </Row>
             <Row className='d-flex w-100 m-0 g-0 gap-4'>
                 <Col className='d-flex'>
                     <Row className='g-0 gap-4 w-100'>
-                        <Col>
-                            <Form.Label htmlFor="date">No. of Passengers:</Form.Label>
+                        <Form.Group as={Col} controlId="NumPassengers">
+                            <Form.Label>No. of Passengers:</Form.Label>
                             <Form.Control 
-                                defaultValue={0}  
+                                defaultValue={1}
+                                required  
                                 className='fs-5' 
                                 type="number"
-                                onChange={e => setFormData({ ...formData, NumPassengers: e.target.value })} 
-                                name='date' 
-                                />
-                        </Col>
-                        <Col>
-                            <Form.Label>Trip Type</Form.Label>
-                            <Form.Group className='d-flex align-self-end py-2 justify-content-around gap-2'>
-                                <Form.Check
-                                    inline
-                                    type="radio"
-                                    id="radio"
-                                    onChange={ e => setFormData({ ...formData, tripType: e.target.value, returnDate: "" }) }
-                                    label="One Way"
-                                    value= "One Way"
-                                    name = "One"
-                                />
-                                <Form.Check
-                                    inline
-                                    type="radio"
-                                    id="radio"
-                                    onChange={ e => setFormData({ ...formData, tripType: e.target.value })}
-                                    label="Round Trip"
-                                    value= "Round Trip"
-                                    name = "One"
-                                />
-                            </Form.Group>
-                        </Col>
+                                onChange={handleInputDataChange} 
+                                name='NumPassengers' />
+                        </Form.Group>
+                        
+                        <Form.Group as={Col} controlId="tripType">
+                            <Form.Label>Trip Type:</Form.Label>
+                            <Form.Select 
+                                name = "tripType"
+                                required
+                                onChange={handleInputDataChange}
+                                type='text'>
+                                    <option value={""} hidden>Choose Trip Type</option>
+                                    <option value="One Way">One Way</option>
+                                    <option value="Round Trip">Round Trip</option>
+                            </Form.Select>
+                        </Form.Group>
                     </Row>
                 </Col>
                 <Col>
-                    <Row className='g-0 gap-4'>
-                        {formData.tripType === "Round Trip" &&  <Col>
-                            <Form.Label htmlFor="return-date">return Date:</Form.Label>
-                            <Form.Control 
-                            className='fs-5' 
-                            style={{paddingBlock: "4.92px",}} 
-                            type="date"
-                            onChange={e => setFormData({...formData, returnDate: e.target.value})}
-                            min = {formattedToday} 
-                            name='return-date'/>
-                        </Col>}
-                        <Col className='bg-white'>
-                            <div className='p-4'></div>
-                            <Button className='mx-auto' type='submit' style={{width: "248px", paddingBlock: "8.3px", margin: '0'}} variant="primary">
+                    <Row className='g-0 gap-0'>
+                        <Col md={8}>
+                        {searchData.tripType === "Round Trip" && searchData.departure_date !== "" && <Row>
+                                <Col >
+                                    <Form.Label htmlFor="return-date">Return Date:</Form.Label>
+                                    <Form.Control 
+                                    required
+                                    type="date"
+                                    onChange={handleInputDataChange}
+                                    min = {formattedToday} 
+                                    name='return_date'/>
+                                </Col>
+                                {searchData.return_date !== "" && <Form.Group as={Col} controlId='returnTime'>
+                                    <Form.Label>Return Time</Form.Label>
+                                    <Form.Select 
+                                    name='return_time' 
+                                    required
+                                    onChange={handleInputDataChange} 
+                                    // onChange={e => setPassengers({...passenger, return_time: e.target.value})}
+                                    id='from'>
+                                        <option hidden value="">Select return time</option>
+                                        {schedules.map(schedule => (
+                                            <option disabled = {schedule.disabled} value={schedule.time} style={schedule}> {schedule.time} </option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>}
+                            </Row>}
+                        </Col>
+                        <Col md={4}>
+                            <div className='py-4'></div>
+                            <div className='w-100 d-flex justify-content-end'>
+                            <Button className='ms-3' type='submit' style={{width: "150px", paddingBlock: "7.5px", background: "#0E9CD8"}} variant="primary">
                                 Search
                             </Button>
+                            </div>
                         </Col>
                     </Row>
                 </Col>
@@ -194,12 +253,12 @@ function BookingSection() {
                         <Row key={route.id} className='border py-3'>
                             <Col> 
                                 <div>{route.origin} - {route.destination}</div>
-                                <div>{route.departure_time}</div>
+                                <div>{`${new Date(route.departure_date + "T" + route.departure_time).toUTCString().slice(0, 22)}`}</div>
                             </Col>
                             <Col>
                                 <ul>
                                     <li>Bus Number: {route.id}</li>
-                                    <li>{route.type}</li>
+                                    <li>Category: {route.category}</li>
                                 </ul>
                             </Col>
                             <Col>
@@ -208,7 +267,7 @@ function BookingSection() {
                                 <Button 
                                     style={{width: "120px"}} 
                                     variant="primary"
-                                    onClick={() => navigate('/reservation', { state: { formData, selectedRoute: route} })}
+                                    onClick={() => navigate('/reservation', { state: { searchData, selectedRoute: route} })}
                                 >Choose</Button>
                             </Col>
                         </Row>
