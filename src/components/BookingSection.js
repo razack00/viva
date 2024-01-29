@@ -56,7 +56,7 @@ function BookingSection() {
         return (routes.filter(route => {
             const routeDateTime = new Date (route.departure_date + "T" + route.departure_time)
             // returning filtered routes
-            return (searchData.category === "All" || route.category === searchData.category) && route.origin === searchData.origin && route.destination === searchData.destination && route.departure_date === searchData.departure_date && today < routeDateTime
+            return (searchData.category === "All" || route.category === searchData.category) && route.origin === searchData.origin && route.destination === searchData.destination && route.departure_date === searchData.departure_date && today < routeDateTime && route.availableSeats >= searchData.NumPassengers
         }))
     }
 
