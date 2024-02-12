@@ -1,8 +1,7 @@
 import { Col, Container, Row, Button, Form, Modal} from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// Todos: add field to database, filter should check that there are enough seats available depending of number passengers passed in.
+import Btn from './Btn';
 
 function BookingSection() {
     const [show, setShow] = useState(false);
@@ -26,10 +25,14 @@ function BookingSection() {
 
     // handles input value change
     const handleInputDataChange = (e) => {
+        const {name, value} = e.target
+        console.log(e.target)
         if (e.target.value === "One Way") {
-            setSeachData({...searchData, [e.target.name]: e.target.value, return_date: ""})
+            setSeachData({...searchData, [name]: value, return_date: ""})
         }else {
-            setSeachData({...searchData, [e.target.name]: e.target.value})
+            setSeachData({...searchData, [name]: value, })
+            // setSeachData({...searchData, [name]: value, return_time: name === "return_date"? "": searchData.return_time})
+            // console.log('info:', searchData)
         }
     }
 
@@ -54,9 +57,10 @@ function BookingSection() {
     // seperate function to filter routes
     const filterAvailableRoutes = (routes) => {
         return (routes.filter(route => {
-            const routeDateTime = new Date (route.departure_date + "T" + route.departure_time)
+            const routeDateTime = new Date (searchData.departure_date + "T" + route.departure_time)
+            const currentDateTime = today
             // returning filtered routes
-            return (searchData.category === "All" || route.category === searchData.category) && route.origin === searchData.origin && route.destination === searchData.destination && route.departure_date === searchData.departure_date && today < routeDateTime && route.availableSeats >= searchData.NumPassengers
+            return (searchData.category === "All" || route.category === searchData.category) && route.origin === searchData.origin && route.destination === searchData.destination && currentDateTime < routeDateTime && route.availableSeats >= searchData.NumPassengers
         }))
     }
 
@@ -65,7 +69,7 @@ function BookingSection() {
         const departureDate = new Date(searchData.departure_date).toDateString()
         const returnDate = new Date(searchData.return_date).toDateString()
         const listOfSchedules = [{time: "04:30"}, {time: "07:30"}, {time: "10:30"}, {time: "13:30"}, {time:  "16:30"}, {time: "19:30"}, {time: "23:58"}]
-        if(departureDate === today.toDateString() && returnDate === departureDate) {
+        if(departureDate === today.toDateString() && returnDate <= departureDate) {
             setSchedules(listOfSchedules.map(schedule => {
                 return new Date(searchData.return_date + "T" + schedule.time) > new Date(today.getTime() + (1 * 60 * 60 * 1000))? {...schedule, color: "", disabled: false} : {...schedule, color: "red", disabled: true}
             }))
@@ -79,12 +83,8 @@ function BookingSection() {
     useEffect(() => {
         fetchRoutes()
         determineScheduleList()
-        console.log('info:', searchData)
-        console.log("return_time", searchData.return_date !== "")
     }, [searchData])
 
-
-    console.log('list:', schedules)
     // handles Modal display
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -97,7 +97,6 @@ function BookingSection() {
         // checks if any input is empty depending on trip type
         const isEmpty = Object.entries(searchData)
         .some(([key, value]) => ((key !== "return_date" && key !== "return_time") || searchData.tripType !== "One Way") && value === "")
-        console.log(isEmpty)
         setValidated(true)
 
         const DepartureDate = new Date(searchData.departure_date)
@@ -121,64 +120,72 @@ function BookingSection() {
     return (
     <Container className='bg-white rounded-4 px-5 py-4 shadow' style={{marginTop: "-85px"}}>
         <div className='text-danger'>{message}</div>
-        <Form noValidate validated = {validated} className='d-flex flex-column justify-content-center gap-5 py-4' onSubmit={handleSubmit}>
+        <Form noValidate validated = {validated} className='d-flex flex-column justify-content-center gap-3  py-4' onSubmit={handleSubmit}>
             <Row className='d-flex'>
-                <Form.Group as={Col} controlId="origin">
-                    <Form.Label>Origin:</Form.Label>
-                    <Form.Select 
-                        name='origin'
-                        required
-                        onChange={handleInputDataChange}
-                        type='text'>
-                            <option value={""} hidden>Enter origin</option>
-                            <option value="Yaounde">Yaounde</option>
-                            <option value="Douala">Douala</option>
-                    </Form.Select>
-                </Form.Group>
-                <Form.Group as={Col} controlId="destination">
-                    <Form.Label>Destination:</Form.Label>
-                    <Form.Select
-                        name='destination' 
-                        onChange={handleInputDataChange}
-                        required
-                        type="text"
-                        >
-                            <option value={""} hidden >Enter destination</option>
-                            <option value="Yaounde">Yaounde</option>
-                            <option value="Douala">Douala</option>
-                    </Form.Select>
-                </Form.Group>
-                <Form.Group as={Col} controlId="category">
-                    <Form.Label>Category:</Form.Label>
-                    <Form.Select 
-                    name='category'
-                    required
-                    type="text" 
-                    onChange={handleInputDataChange}>
-                        <option value="" hidden>select category</option>
-                        <option value="All">All</option>
-                        <option value="Economic">Economic</option>
-                        <option value="First Class">First Class</option>
-                        <option value="Classic">Classic</option>
-                    </Form.Select>
-                </Form.Group>
-                <Form.Group as={Col} controlId="departureDate">
-                    <Form.Label>Departure Date:</Form.Label>
-                    <Form.Control 
-                    className='fs-5 text-lightgrey' 
-                    style={{paddingBlock: "4.92px",}} 
-                    type="date"
-                    required
-                    onChange={handleInputDataChange}
-                    min = {formattedToday} 
-                    name='departure_date'/>
-                </Form.Group>
+                <Col sm className='pt-3'>
+                    <Row>
+                        <Form.Group as={Col} controlId="origin">
+                            <Form.Label>Origin:</Form.Label>
+                            <Form.Select 
+                                name='origin'
+                                required
+                                onChange={handleInputDataChange}
+                                type='text'>
+                                    <option value={""} hidden>Enter origin</option>
+                                    <option value="Yaounde">Yaounde</option>
+                                    <option value="Douala">Douala</option>
+                            </Form.Select>
+                        </Form.Group>                
+                        <Form.Group as={Col} controlId="destination">
+                            <Form.Label>Destination:</Form.Label>
+                            <Form.Select
+                                name='destination' 
+                                onChange={handleInputDataChange}
+                                required
+                                type="text"
+                                >
+                                    <option value={""} hidden >Enter destination</option>
+                                    <option value="Yaounde">Yaounde</option>
+                                    <option value="Douala">Douala</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </Row>
+                </Col>
+                <Col sm className='pt-3'>
+                    <Row>
+                        <Form.Group as={Col} controlId="category">
+                            <Form.Label>Category:</Form.Label>
+                            <Form.Select 
+                            name='category'
+                            required
+                            type="text" 
+                            onChange={handleInputDataChange}>
+                                <option value="" hidden>select category</option>
+                                <option value="All">All</option>
+                                <option value="Economic">Economic</option>
+                                <option value="First Class">First Class</option>
+                                <option value="Classic">Classic</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="departureDate">
+                            <Form.Label>Departure Date:</Form.Label>
+                            <Form.Control 
+                            className='fs-5 text-lightgrey' 
+                            style={{paddingBlock: "4.92px",}} 
+                            type="date"
+                            required
+                            onChange={handleInputDataChange}
+                            min = {formattedToday} 
+                            name='departure_date'/>
+                        </Form.Group>
+                    </Row>
+                </Col>
             </Row>
             <Row className='d-flex w-100 m-0 g-0 gap-4'>
-                <Col className='d-flex'>
+                <Col sm className='d-flex'>
                     <Row className='g-0 gap-4 w-100'>
                         <Form.Group as={Col} controlId="NumPassengers">
-                            <Form.Label>No. of Passengers:</Form.Label>
+                            <Form.Label>No. Passengers:</Form.Label>
                             <Form.Control 
                                 defaultValue={1}
                                 required  
@@ -221,7 +228,6 @@ function BookingSection() {
                                     name='return_time' 
                                     required
                                     onChange={handleInputDataChange} 
-                                    // onChange={e => setPassengers({...passenger, return_time: e.target.value})}
                                     id='from'>
                                         <option hidden value="">Select return time</option>
                                         {schedules.map(schedule => (
@@ -232,7 +238,7 @@ function BookingSection() {
                             </Row>}
                         </Col>
                         <Col md={4}>
-                            <div className='py-4'></div>
+                            <div className='py-3'></div>
                             <div className='w-100 d-flex justify-content-end'>
                             <Button className='ms-3' type='submit' style={{width: "150px", paddingBlock: "7.5px", background: "#0E9CD8"}} variant="primary">
                                 Search
@@ -253,7 +259,7 @@ function BookingSection() {
                         <Row key={route.id} className='border py-3'>
                             <Col> 
                                 <div>{route.origin} - {route.destination}</div>
-                                <div>{`${new Date(route.departure_date + "T" + route.departure_time).toUTCString().slice(0, 22)}`}</div>
+                                <div>{searchData.departure_date} at {route.departure_time}</div>
                             </Col>
                             <Col>
                                 <ul>
@@ -267,7 +273,7 @@ function BookingSection() {
                                 <Button 
                                     style={{width: "120px"}} 
                                     variant="primary"
-                                    onClick={() => navigate('/reservation', { state: { searchData, selectedRoute: route} })}
+                                    onClick={() => navigate('/reservationdetails', { state: { searchData, selectedRoute: route} })}
                                 >Choose</Button>
                             </Col>
                         </Row>
