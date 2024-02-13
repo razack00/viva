@@ -1,7 +1,4 @@
-import { Row, Col, Container } from 'react-bootstrap/';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Row, Col, Container, Nav, Navbar, NavDropdown} from 'react-bootstrap/';
 import { LinkContainer } from 'react-router-bootstrap';
 
 function NavBar() {
@@ -34,23 +31,16 @@ function NavBar() {
                 <Nav.Link>ABOUT US</Nav.Link>
               </LinkContainer>
               <NavDropdown title="SERVICES" id="basic-nav-dropdown" renderMenuOnMount={true}>
-              <LinkContainer to="/about">
-                <NavDropdown.Item>TRANSPORTATION</NavDropdown.Item>
-              </LinkContainer>
-              <LinkContainer to="/">
-                <NavDropdown.Item>COURIER SERVICES</NavDropdown.Item>
-              </LinkContainer>
-              </NavDropdown>
-              <NavDropdown title="PLAN YOUR JOURNEY" id="basic-nav-dropdown" renderMenuOnMount={true}>
-                <LinkContainer to="/">
-                  <NavDropdown.Item>
-                    ROUTES AND PRICES
-                  </NavDropdown.Item>
+                <LinkContainer to="/services/transportServices">
+                  <NavDropdown.Item>TRANSPORTATION</NavDropdown.Item>
                 </LinkContainer>
-                <LinkContainer to="reservation">
-                  <NavDropdown.Item>BOOK A RESERVATION</NavDropdown.Item>
+                <LinkContainer to="/services/CourierServices">
+                  <NavDropdown.Item>COURIER SERVICES</NavDropdown.Item>
                 </LinkContainer>
               </NavDropdown>
+              <LinkContainer to="reservation">
+                  <Nav.Link>RESERVATION</Nav.Link>
+                </LinkContainer>
               <LinkContainer to="/blog">
                 <Nav.Link>BLOG</Nav.Link>
               </LinkContainer>
