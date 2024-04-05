@@ -3,7 +3,7 @@ import { Col, Row, Card, Container} from 'react-bootstrap';
 
 function Showcase() {
   return (
-    <Container className='vh-100 d-flex align-items-center justify-content-center text-white'>
+    <Container className='d-flex align-items-center justify-content-center text-white mb-5'>
         <Row  className='bg-dark rounded-5 d-flex align-items-center  h-75'>
             <Col className='d-flex flex-column justify-content-between p-0 h-100' md={6}>
                 <div style={{marginBottom: "20px", padding: "50px 20px 0px 20px", width: "80%"}}>
