@@ -1,9 +1,10 @@
 import { Col, Container, Row, Button, Form, Modal} from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Btn from './Btn';
+import { useData } from '../context/DataContext';
 
 function BookingSection() {
+    const {routes, routesError} = useData()
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false)
     const [availableRoutes, setavailableRoutes] = useState([]);
@@ -26,31 +27,10 @@ function BookingSection() {
     // handles input value change
     const handleInputDataChange = (e) => {
         const {name, value} = e.target
-        console.log(e.target)
         if (e.target.value === "One Way") {
             setSeachData({...searchData, [name]: value, return_date: ""})
         }else {
             setSeachData({...searchData, [name]: value, })
-            // setSeachData({...searchData, [name]: value, return_time: name === "return_date"? "": searchData.return_time})
-            // console.log('info:', searchData)
-        }
-    }
-
-    //Fetches available routes
-    const fetchRoutes = async() => {
-        try{
-          const response = await fetch('http://localhost:8000/routes')
-
-          //Throws a custom error if the status code is not ok   
-          if(!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
-          }
-          const data = await response.json()
-
-          //sets available routes to filtered routes 
-          setavailableRoutes(filterAvailableRoutes(data))
-        } catch (err) {
-          alert("We're having trouble fetching available routes. Please check your internet connection and try again.")
         }
     }
 
@@ -60,7 +40,7 @@ function BookingSection() {
             const routeDateTime = new Date (searchData.departure_date + "T" + route.departure_time)
             const currentDateTime = today
             // returning filtered routes
-            return (searchData.category === "All" || route.category === searchData.category) && route.origin === searchData.origin && route.destination === searchData.destination && currentDateTime < routeDateTime && route.availableSeats >= searchData.NumPassengers
+            return (searchData.category === "All" || route.category === searchData.category) && route.origin === searchData.origin && route.destination === searchData.destination && currentDateTime < routeDateTime
         }))
     }
 
@@ -81,9 +61,9 @@ function BookingSection() {
 
     // rerenders when form input state changes
     useEffect(() => {
-        fetchRoutes()
+        routes && setavailableRoutes(filterAvailableRoutes(routes))
         determineScheduleList()
-    }, [searchData])
+    }, [searchData, routes]) //eslint-disable-line react-hooks/exhaustive-deps
 
     // handles Modal display
     const handleClose = () => setShow(false);
@@ -93,7 +73,6 @@ function BookingSection() {
     // validates form submittion
     const handleSubmit = (event) => {
         event.preventDefault()
-
         // checks if any input is empty depending on trip type
         const isEmpty = Object.entries(searchData)
         .some(([key, value]) => ((key !== "return_date" && key !== "return_time") || searchData.tripType !== "One Way") && value === "")
@@ -105,9 +84,11 @@ function BookingSection() {
         if(isEmpty){
             setmessage("Please make sure all fields are filled ")
         }else if(searchData.origin === searchData.destination) {
-            setmessage("Invalid Route. Choose a valid route")
+            setmessage("Invalid Route. Origin and Destination can't be the same")
         }else if(searchData.tripType === "Round Trip" && DepartureDate > ReturnDate) {
             setmessage("Invalid date. Return date most be a future date")
+        }else if(routesError) {
+            setmessage(routesError)
         }else if(availableRoutes.length > 0) {
             // displays modal and reset message
             handleShow()
@@ -188,6 +169,7 @@ function BookingSection() {
                             <Form.Label>No. Passengers:</Form.Label>
                             <Form.Control 
                                 defaultValue={1}
+                                min = {1}
                                 required  
                                 className='fs-5' 
                                 type="number"
@@ -248,7 +230,7 @@ function BookingSection() {
                     </Row>
                 </Col>
             </Row>
-
+            
             {/* pop up to the list of available routes and buses */}
             <Modal className='modal-lg' show={show} onHide={handleClose}>
                 <Modal.Header closeButton>Available buses for your Search
