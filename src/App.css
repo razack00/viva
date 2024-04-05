@@ -71,7 +71,7 @@ body {
 }
 
 .container {
-  max-width: 100% !important;
+  max-width: 1140px !important;
   width: 92.5% !important;
 }
 
@@ -175,7 +175,8 @@ i, select, option, .form-control{
 }
 
 input[type="radio"], .form-select, .form-control{
-  color: #8d8d8d;
+  color: #787878;
+  border-color:#6e6e6e;
 }
 
 .reservationInputs .form-select, .reservationInputs .form-control {
@@ -194,7 +195,7 @@ input[type="radio"], .form-select, .form-control{
 }
 
 .reservationInputs .form-select option[disabled] {
-  color: #7e7e7e !important
+  color: #979797 !important
 }
 /* End Bookind section styles */
 
