@@ -9,7 +9,7 @@ function NavBar() {
       expand="md" 
       style={{background: "#0E9CD8", zIndex: "888", position: "fixed", top: '0', borderBottom: " 5px solid #fff"}}>
         <Container fluid className='d-flex container'>
-        <LinkContainer to="viva-Express">
+        <LinkContainer to="/">
         <Navbar.Brand href="#home">
             <Row>
               <Col style={{height:"fit-content"}}>
@@ -24,7 +24,7 @@ function NavBar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav border-white bg-white" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto w-100 justify-content-end">
-              <LinkContainer to="viva-Express">
+              <LinkContainer to="/">
                 <Nav.Link className='nav-item'>HOME</Nav.Link>
               </LinkContainer>
               <LinkContainer to="/about">
