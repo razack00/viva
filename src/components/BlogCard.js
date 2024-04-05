@@ -11,7 +11,7 @@ function BlogCard({blog}) {
         <Card.Text>
          {blog.body.slice(0, 100)}... 
         </Card.Text>
-        <Link to={`/blogs/${blog.id}`}> Read More </Link> 
+        <Link to={`/details/${blog.id}`}> Read More </Link> 
       </Card.Body>
     </Card>    
   );
