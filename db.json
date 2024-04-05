@@ -24,7 +24,7 @@
             "id": "P0003",
             "origin": "Douala",
             "destination": "Yaounde",
-            "departure_date": "2024-01-07",  
+            "departure_date": "2024-04-07",  
             "departure_time": "16:30",  
             "travel_duration": 4,
             "category": "Classic", 
@@ -32,7 +32,7 @@
         }
     ],
 
-    "Blogs":[
+    "blogs":[
         {
             "id":1,
             "img": "/images/bus4.jpg",
@@ -58,13 +58,13 @@
             "body":" This way we can encourage the shift from cars to shared transport and greatly reduce the negative effects of transport on our environment and on our health and wellbeing.We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde. We have cargo trucks and buses to transport all types of mails and goods to and from Yaounde. Our sending rates starts from 1000FCFA, We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde. We have cargo trucks and buses to transport all types of mails and goods to and from Yaounde. Our sending rates starts from 1000FCFA Our sending rates starts from 1000FCFA, We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde Our sending rates starts from 1000FCFA, We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde"
         },
         {
-            "id":3,
+            "id":8,
             "img": "/images/bus3.jpeg",
             "title":"How we came about",
             "body":"Viva Express is a Company founded in 2017 to develop a new kind of inter urban transportation service in Cameroon.In the world of human transportation, bus travel is fun, friendly, affordable and sustainable. In a nutshell, we aim to develop a bus service which people enjoy, look forward to, and above all, choose to use in preference to private motor transport. This way we can encourage the shift from cars to shared transport and greatly reduce the negative effects of transport on our environment and on our health and wellbeing.We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde. We have cargo trucks and buses to transport all types of mails and goods to and from Yaounde. Our sending rates starts from 1000FCFA, We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde. We have cargo trucks and buses to transport all types of mails and goods to and from Yaounde. Our sending rates starts from 1000FCFA"
         },
         {
-            "id":1,
+            "id":9,
             "img": "/images/bus4.jpg",
             "title":"Welcome to the new blog",
             "body":" This way we can encourage the shift from cars to shared transport and greatly reduce the negative effects of transport on our environment and on our health and wellbeing.We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde. We have cargo trucks and buses to transport all types of mails and goods to and from Yaounde. Our sending rates starts from 1000FCFA, We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde. We have cargo trucks and buses to transport all types of mails and goods to and from Yaounde. Our sending rates starts from 1000FCFA.  This way we can encourage the shift from cars to shared transport and greatly reduce the negative effects of transport on our environment and on our health and wellbeing.We offer some of the best rates to cater for your mails,parcels,goods between Douala and Yaounde. We have cargo trucks and buses to transport all types of mails and goods to and from Yaounde. Our sending rates starts from 1000FCFA, We offer some of the best rates to cater for your mails, parcels, goods between Douala and Yaounde. We have cargo trucks and buses to transport all types of mails and goods to and from Yaounde. Our sending rates starts from 1000FCFA"
