@@ -33,7 +33,7 @@ function CourierServices() {
           </Row>
         </Col>
         <Col md={4}>
-          <img src="/images/bus3.jpeg" alt="Bus image" className="bus" />
+          <img src="/images/bus3.jpeg" alt="Bus" className="img-fluid" />
         </Col>
       </Row>
 
