@@ -24,7 +24,7 @@ function About(){
 
                 </Col>
                 <Col md={6}>
-                <img src="images/bus1.jpeg" alt="Bus agency image" className="w-100" />
+                <img src="images/bus1.jpeg" alt="Bus" className="w-100" />
                 </Col>
             </Row>
             <Row className='mt-5'>
