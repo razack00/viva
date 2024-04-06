@@ -8,8 +8,9 @@ export const useData = () => {
 }
 
 export const ContextProvider = ({children}) => {
-    const API_URL_BLOGS = 'http://localhost:8000/blogs'
-    const API_URL_ROUTES = 'http://localhost:8000/routes'
+    const API_URL = 'https://vivaexpress.netlify.app/db.json'
+    const API_URL_BLOGS = `${API_URL}/blogs`
+    const API_URL_ROUTES =  `${API_URL}/routes`
 
     const {data: blogs, isPending: blogsPending, error:blogsError} = useFetch(API_URL_BLOGS)
     const {data: routes, isPending: routesPending, error: routesError} = useFetch(API_URL_ROUTES)
