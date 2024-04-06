@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Table} from 'react-bootstrap';
 import Accordion from 'react-bootstrap/Accordion';
 import Btn from '../components/Btn';
+import { Link } from 'react-router-dom';
 
 function CourierServices() {
   return (
@@ -32,7 +33,7 @@ function CourierServices() {
           </Row>
         </Col>
         <Col md={4}>
-          <img src="/images/bus3.jpeg" alt="Bus image" className="img-fluid" />
+          <img src="/images/bus3.jpeg" alt="Bus image" className="bus" />
         </Col>
       </Row>
 
@@ -127,7 +128,7 @@ function CourierServices() {
               <p>
                 Ready to book your next trip? Visit our booking page or contact us today to learn more about our transportation services!
               </p>
-              <a href="#" className="btn btn-primary p-4">Book Now</a>
+              <Link to={"/reservation"} className="btn btn-primary p-4">Book Now</Link>
             </Col>
           </Row>
         </Col>

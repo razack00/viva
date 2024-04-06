@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Table} from 'react-bootstrap';
 import Accordion from 'react-bootstrap/Accordion';
-import Btn from '../components/Btn';
 import LinkBtn from '../components/LinkBtn'
 
 function TransportServices() {
@@ -31,7 +30,7 @@ function TransportServices() {
           </Row>
         </Col>
         <Col md={4}>
-          <img src="/images/bus3.jpeg" alt="Bus image" className="img-fluid" />
+          <img src="/images/bus3.jpeg" alt="Bus image" className="bus" />
         </Col>
       </Row>
 
