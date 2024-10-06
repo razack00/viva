@@ -251,7 +251,7 @@ function BookingSection() {
                             </Col>
                             <Col>
                                 <li>Price: {route.price}</li>
-                                {/* a choose btn which takes users to reservation page along with data using useNavigation() */}
+                                {/* a choose btn which takes users to reservation page along with data using useNavigation*/}
                                 <Button 
                                     style={{width: "120px"}} 
                                     variant="primary"
